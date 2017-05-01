@@ -22,8 +22,10 @@ public class ArticleController {
     public void start() {
         try {
 
+            //set crawl storage folder
             String crawlStorageFolder = TEMP_CRAWL_STORAGE_FOLDER;
 
+            //configure crawl controller
             CrawlConfig config = new CrawlConfig();
             config.setCrawlStorageFolder(crawlStorageFolder);
             config.setMaxDepthOfCrawling(crawlParams.getDepth());
@@ -33,7 +35,9 @@ public class ArticleController {
             RobotstxtServer robotstxtServer = new RobotstxtServer(robotstxtConfig, pageFetcher);
             CrawlController controller = new CrawlController(config, pageFetcher, robotstxtServer);
 
+            //add custom application params
             controller.setCustomData(crawlParams);
+
             controller.addSeed(crawlParams.getSourceURL());
             controller.start(ArticleCrawler.class, crawlParams.getCrawlThreads());
         } catch (Exception e) {

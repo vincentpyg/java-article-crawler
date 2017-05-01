@@ -12,6 +12,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
+ * Contains logic for extracting an article from a web page
  * @author vincentg
  */
 public class ArticleExtractor implements ArticleExtractorIF {

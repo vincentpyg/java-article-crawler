@@ -26,9 +26,9 @@ public class Main {
     private int depth = 0; //default depth
 
     @Parameter(names = {"-c", "--config"},
-            converter = PropertiesConverter.class,
-            validateValueWith = PropertiesValidator.class,
-            required = true)
+            converter = PropertiesConverter.class, //create properties from arg
+            validateValueWith = PropertiesValidator.class, //validate properties file
+            required = true) //make sure the app runs with a config properties file
     Properties config;
 
     public static void main(String... args) {
@@ -39,8 +39,7 @@ public class Main {
 
     private void run() {
 
-        System.out.println(config.getProperty(CONFIG_AUTHOR_PATTERN));
-        System.out.println(config.getProperty(CONFIG_CRAWL_PATTERN));
+        //set up crawl application params
         CrawlParams crawlParams = CrawlParams.builder()
                 .crawlThreads(crawlThreads)
                 .depth(depth)

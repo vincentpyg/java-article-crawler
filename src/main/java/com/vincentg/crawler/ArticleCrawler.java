@@ -27,6 +27,7 @@ public class ArticleCrawler extends WebCrawler {
 
     @Override
     public boolean shouldVisit(Page referringPage, WebURL webURL) {
+        //visit site rules
         return SITE_FILTER.matcher(webURL.getURL()).find();
     }
 
@@ -34,6 +35,7 @@ public class ArticleCrawler extends WebCrawler {
     @Override
     public void init(int id, CrawlController crawlController) throws InstantiationException, IllegalAccessException {
         super.init(id, crawlController);
+        //set crawl application parameters
         crawlParams = (CrawlParams) this.getMyController().getCustomData();
         extractor = crawlParams.getExtractor();
         SITE_FILTER = Pattern.compile(crawlParams.getCrawlPattern());
@@ -45,6 +47,7 @@ public class ArticleCrawler extends WebCrawler {
         String pageContent = new String(page.getContentData());
         try {
             JSONObject article = extractor.extractArticle(pageContent);
+            //write article to mongo and log it to debug
             if (article != null) {
                 LOG.debug(article.toJSONString());
                 mongoWriter.insert(article.toJSONString());
@@ -57,6 +60,7 @@ public class ArticleCrawler extends WebCrawler {
     @Override
     public void onBeforeExit() {
         super.onBeforeExit();
+        //close mongodb connection
         mongoWriter.close();
     }
 }
