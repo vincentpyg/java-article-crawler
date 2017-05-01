@@ -1,6 +1,7 @@
 ## java-article-crawler
 
 Web crawler used to crawl and extract information from articles in bbc.com and theguardian.com
+Sample configs are stored in the config folder.
 
 ### Commandline Arguments
 
@@ -18,12 +19,20 @@ Web crawler used to crawl and extract information from articles in bbc.com and t
 |`authorPattern`|Regex pattern used to extract the author of the article|
 |`headlinePattern`|Regex pattern used to extract the headline of the article|
 |`contentPattern`|class name where the article's content is located|
-|`mongoURI`|mongodb URI (complete server address)|
-|`mongoDB`|mongodb database name|
-|`mongoCollection`|mondodb collection where the articles will be stored|
+|`mongoURI`|mongodb URI (complete server address with database)|
+|`mongoCollection`|mongodb collection where the articles will be stored|
+
+### Building the application
+```$bash
+$ gradle build
+```
+
+### Building the application and skip tests
+```$bash
+$ gradle build -x test
+```
 
 ### Running the application
-```$Bash
+```$bash
 $ java -jar ${APPLICATION_JAR} -d ${CRAWL_DEPTH} -t ${CRAWL_THREADS} -c ${CONFIG_PROPERTIES_FILE}
-
 ```

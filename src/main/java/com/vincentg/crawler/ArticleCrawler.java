@@ -27,7 +27,6 @@ public class ArticleCrawler extends WebCrawler {
 
     @Override
     public boolean shouldVisit(Page referringPage, WebURL webURL) {
-        //visit site rules
         return SITE_FILTER.matcher(webURL.getURL()).find();
     }
 
@@ -44,15 +43,24 @@ public class ArticleCrawler extends WebCrawler {
 
     @Override
     public void visit(Page page) {
+
+        String url = page.getWebURL().getURL();
+
+        if (LOG.isDebugEnabled())
+            LOG.debug("visiting: "+url);
+
         String pageContent = new String(page.getContentData());
         try {
             JSONObject article = extractor.extractArticle(pageContent);
             //write article to mongo and log it to debug
             if (article != null) {
-                LOG.debug(article.toJSONString());
+                article.put("source",page.getWebURL().getURL());
+                if (LOG.isDebugEnabled())
+                    LOG.debug(article.toJSONString());
                 mongoWriter.insert(article.toJSONString());
             }
         } catch (Exception e) {
+            LOG.warn("skipping page: "+url);
             e.printStackTrace();
         }
     }
@@ -61,6 +69,10 @@ public class ArticleCrawler extends WebCrawler {
     public void onBeforeExit() {
         super.onBeforeExit();
         //close mongodb connection
-        mongoWriter.close();
+        try {
+            mongoWriter.close();
+        } catch (Exception e) {
+            LOG.error("Failed to close mongodbWriter");
+        }
     }
 }
