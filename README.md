@@ -3,6 +3,8 @@
 Web crawler used to crawl and extract information from articles in bbc.com and theguardian.com
 Sample configs are stored in the config folder.
 
+The application uses lombok to reduce development time by generating boilerplate code during compile time through annotations. When running the application from intellij, make sure the lombok plugin is installed and Annotation Processing is enabled.
+
 ### Commandline Arguments
 
 |Parameter|Value|Required|Default|
